@@ -1,99 +1,64 @@
 # EXP 1 A : COMPUTATION OF DFT USING DIRECT AND FFT
 
 # AIM: 
- To Obtain DFT and FFT of a given sequence in SCILAB. 
+To Obtain DFT and FFT of a given sequence in SCILAB. 
 
 # APPARATUS REQUIRED: 
 PC installed with SCILAB. 
 
-# PROGRAM DIRECT METHOD: 
-````
-clc; 
-clear; 
-xn=[1 1 1 1 0 0 0 0]; 
- 
-n1=0:1:length(xn)-1; 
-subplot(3,1,1); 
-plot2d3(n1,xn); 
-xlabel('Time n'); 
-ylabel('Amplitude xn'); 
-title('Input Sequence'); 
-j=sqrt(-1); 
-N=length(xn); 
-Xk=zeros(1,N); 
-for k=0:N-1 
-for n=0:N-1 
-Xk(k+1)=Xk(k+1)+xn(n+1)*exp((-j*2*%pi*k*n)/N); 
-end  
- 
-end 
-disp(Xk) 
-K1=0:1:length(Xk)-1; 
-magnitude=abs(Xk) 
-subplot(3,1,2); 
-plot2d3(K1,magnitude); 
-xlabel('frequency(Hz)'); 
-ylabel('magnitude(gain)'); 
-title('magnitude spectrum'); 
-angle = atan(imag(Xk),real(Xk)) 
-subplot(3,1,3); 
-plot2d3(K1,angle); 
-xlabel('frequency(Hz)'); 
-ylabel('Phase'); 
-title('Phase spectrum');
-````
-#PROGRAM FFT:
+# PROGRAM: 
+```
+clc;
+clear;
 
-````
- 
- 
-clear; 
-clc; 
-close; 
-xn = [0.5 0.5 0.5 0.5 0 0 0 0] 
- 
-n1=0:1:length(xn)-1; 
-subplot(2,2,1); 
-plot2d3(n1,xn); 
-xlabel('Time n'); 
-ylabel('Amplitude'); 
-title('Input Sequence'); 
- 
-Xk = fft(xn); 
- 
-K1=0:1:length(Xk)-1; 
-magnitude=abs(Xk) 
-subplot(2,2,2); 
-plot2d3(K1,magnitude); 
-xlabel('frequency(Hz)'); 
-ylabel('magnitude(gain)'); 
-title('magnitude spectrum'); 
-angle = atan(imag(Xk),real(Xk)) 
-subplot(2,2,3); 
-plot2d3(K1,angle); 
-xlabel('frequency(Hz)'); 
-ylabel('Phase'); 
-title('Phase spectrum') 
-y= ifft(Xk) 
- 
-n2=0:1:length(y)-1; 
-subplot(2,2,4) 
-plot2d3(n2,y) 
-xlabel('Time n'); 
-ylabel('Amplitude'); 
-title('Inverse FFT OF X(K)'); 
+// Input sequence
+x = input("Enter discrete signal as [x1 x2 ...]: ");
+N = length(x);
 
-````
-# OUTPUT FOR DIRECT METHOD: 
+// -------------------------
+// DFT using direct formula
+// -------------------------
+X_dft = zeros(1, N);
+for k = 0:N-1
+    for n = 0:N-1
+        X_dft(k+1) = X_dft(k+1) + x(n+1) * exp(-%i * 2 * %pi * k * n / N);
+    end
+end
 
+// Frequency axis (normalized)
+f = (0:N-1) / N;
 
-<img width="775" height="729" alt="image" src="https://github.com/user-attachments/assets/2fceab39-f49d-45d9-8999-dee82a6683ba" />
+// Plot DFT magnitude & phase
+scf(0); // new figure window
+subplot(2,1,1);
+plot2d3(f, abs(X_dft));
+xtitle("Magnitude Spectrum using Direct DFT");
 
-# OUTPUT FOR FFT:
+subplot(2,1,2);
+plot2d3(f, atan(imag(X_dft), real(X_dft))); // atan2 equivalent
+xtitle("Phase Spectrum using Direct DFT");
 
-<img width="760" height="734" alt="image" src="https://github.com/user-attachments/assets/e77d3af5-3a6e-4564-b866-fa31f32cbead" />
+// -------------------------
+// FFT using built-in function
+// -------------------------
+X_fft = fft(x, -1);   // -1 for forward FFT in Scilab
 
+// Plot FFT magnitude & phase
+scf(1); // new figure window
+subplot(2,1,1);
+plot2d3(f, abs(X_fft));
+xtitle("Magnitude Spectrum using FFT");
 
+subplot(2,1,2);
+plot2d3(f, atan(imag(X_fft), real(X_fft))); // atan2 equivalent
+xtitle("Phase Spectrum using FFT");
+```
 
-# RESULT: 
-COMPUTATION OF DFT USING DIRECT AND FFT METHOD ARE EXECUTED SUCCESSFULLY IN SCILAB
+# OUTPUT(Using Direct DFT):
+<img width="762" height="574" alt="image" src="https://github.com/user-attachments/assets/ae2afdeb-9fce-4235-bacb-919ce4eecf2f" />
+
+# OUTPUT(Using FFT):
+<img width="763" height="574" alt="image" src="https://github.com/user-attachments/assets/dd7377b0-6434-4fbf-8b43-b89bf414381e" />
+
+# Result:
+DFT and FFT of a given sequence in SCILAB was obtained.
